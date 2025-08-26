@@ -1,3 +1,6 @@
+import torch
+
+
 def process_inputs(processor, image_url, prompt, device):
     messages = [
         {
@@ -17,9 +20,11 @@ def process_inputs(processor, image_url, prompt, device):
     ).to(device)
     
 
-def generate(model, processor, inputs):
-    with torch.inference_mode():
-    generated_ids = model.generate(**inputs, do_sample=True, max_new_tokens=200) 
+def generate(model, processor, inputs, **kwargs):
+    generation_kwargs = dict(do_sample=True, max_new_tokens=200)
+    generation_kwargs.update(kwargs)  # merges user overrides
     
-
-    return processor.decode(outputs, skip_special_tokens=True)
+    with torch.inference_mode():
+        generated_ids = model.generate(**inputs, **generation_kwargs)
+        
+    return generated_ids
