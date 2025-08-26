@@ -22,7 +22,6 @@ source "$VENV_PATH/bin/activate"
 
 if [ "$RESET_ENV" == "true" ]; then
   pip install --quiet --upgrade pip
-  pip install --quiet -e .
   pip install --quiet --upgrade -r requirements.txt
   echo "Dependencies installed at $(date)"
 else

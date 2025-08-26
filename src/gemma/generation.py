@@ -1,15 +1,22 @@
 import torch
 
 
-def process_inputs(processor, image_url, prompt, device):
+def process_inputs(processor, image_url, user_prompt, device, assistant_prompt=None):
     messages = [
         {
             "role": "user", "content": [
                 { "type": "image", "url": image_url },
-                { "type": "text", "text": prompt },
+                { "type": "text", "text": user_prompt },
             ]
         },
     ]
+    
+    if assistant_prompt:
+        messages.append({
+            "role": "assistant", "content": [
+                { "type": "text", "text": assistant_prompt },
+            ]
+        })
 
     return processor.apply_chat_template(
         messages,
